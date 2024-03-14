@@ -23,7 +23,7 @@ public class Product {
 
     private BigDecimal price;
 
-    private String categoryId;
+    private Category category;
 
     private String ownerId;
 
