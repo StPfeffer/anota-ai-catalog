@@ -34,4 +34,11 @@ public class CategoryController {
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<CategoryDTO> get(@PathVariable String id) {
+        CategoryDTO category = this.service.findCategory(id);
+
+        return new ResponseEntity<>(category, HttpStatus.OK);
+    }
+
 }
