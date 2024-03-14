@@ -5,10 +5,9 @@ import com.pfeffer.anotaaicatalog.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/category")
@@ -26,6 +25,13 @@ public class CategoryController {
         CategoryDTO category = this.service.create(dto);
 
         return new ResponseEntity<>(category, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CategoryDTO>> listAll() {
+        List<CategoryDTO> categories = this.service.getAll();
+
+        return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
 }
