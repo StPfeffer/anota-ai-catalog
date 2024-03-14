@@ -36,9 +36,23 @@ public class CategoryController {
 
     @GetMapping("{id}")
     public ResponseEntity<CategoryDTO> get(@PathVariable String id) {
-        CategoryDTO category = this.service.findCategory(id);
+        CategoryDTO category = this.service.find(id);
 
         return new ResponseEntity<>(category, HttpStatus.OK);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<CategoryDTO> update(@PathVariable String id, @RequestBody CategoryDTO dto) {
+        CategoryDTO category = this.service.update(id, dto);
+
+        return new ResponseEntity<>(category, HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<CategoryDTO> delete(@PathVariable String id) {
+        this.service.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 
 }
