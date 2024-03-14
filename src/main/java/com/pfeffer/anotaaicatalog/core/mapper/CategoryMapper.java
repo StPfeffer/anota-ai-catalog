@@ -5,7 +5,7 @@ import com.pfeffer.anotaaicatalog.core.entity.CategoryBO;
 
 public class CategoryMapper {
 
-    public CategoryDTO toDTO(CategoryBO bo) {
+    public static CategoryDTO toDTO(CategoryBO bo) {
         CategoryDTO dto = new CategoryDTO();
 
         dto.setTitle(bo.getTitle());
@@ -15,7 +15,7 @@ public class CategoryMapper {
         return dto;
     }
 
-    public CategoryBO toBO(CategoryDTO dto) {
+    public static CategoryBO toBO(CategoryDTO dto) {
         CategoryBO bo = new CategoryBO();
 
         bo.setTitle(dto.getTitle());
