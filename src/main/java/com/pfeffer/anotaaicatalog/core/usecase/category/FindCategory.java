@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface FindCategory {
 
-    CategoryDTO findCategory(String id);
+    CategoryDTO find(String id);
 
     List<CategoryDTO> getAll();
 
