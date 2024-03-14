@@ -3,7 +3,7 @@ package com.pfeffer.anotaaicatalog.infra.mongo.mapper;
 import com.pfeffer.anotaaicatalog.core.entity.CategoryBO;
 import com.pfeffer.anotaaicatalog.infra.mongo.model.Category;
 
-public class CategoryMapper {
+public class MongoCategoryMapper {
 
     public static CategoryBO toDomain(Category entity) {
         CategoryBO domain = new CategoryBO();
