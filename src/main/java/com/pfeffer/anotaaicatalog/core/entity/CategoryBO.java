@@ -2,11 +2,21 @@ package com.pfeffer.anotaaicatalog.core.entity;
 
 public class CategoryBO {
 
+    private String id;
+
     private String title;
 
     private String ownerId;
 
     private String description;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
