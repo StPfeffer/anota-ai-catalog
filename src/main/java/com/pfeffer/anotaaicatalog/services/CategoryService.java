@@ -1,13 +1,15 @@
 package com.pfeffer.anotaaicatalog.services;
 
 import com.pfeffer.anotaaicatalog.core.dto.CategoryDTO;
+import com.pfeffer.anotaaicatalog.core.mapper.CategoryMapper;
 import com.pfeffer.anotaaicatalog.core.usecase.CreateCategory;
+import com.pfeffer.anotaaicatalog.infra.mongo.mapper.MongoCategoryMapper;
+import com.pfeffer.anotaaicatalog.infra.mongo.model.Category;
 import com.pfeffer.anotaaicatalog.infra.mongo.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class CategoryService {
+public class CategoryService implements CreateCategory {
 
     private final CategoryRepository repository;
 
@@ -15,11 +17,13 @@ public class CategoryService {
         this.repository = repository;
     }
 
-    @Transactional
+    @Override
     public CategoryDTO create(CategoryDTO dto) {
-        CreateCategory createCategory = new CreateCategory(repository);
+        Category newCategory = new Category(dto);
 
-        return createCategory.execute(dto);
+        this.repository.save(newCategory);
+
+        return CategoryMapper.toDTO(MongoCategoryMapper.toDomain(newCategory));
     }
 
 }
