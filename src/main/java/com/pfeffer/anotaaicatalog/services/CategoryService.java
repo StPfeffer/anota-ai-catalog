@@ -1,9 +1,12 @@
 package com.pfeffer.anotaaicatalog.services;
 
 import com.pfeffer.anotaaicatalog.core.dto.CategoryDTO;
+import com.pfeffer.anotaaicatalog.core.exceptions.category.CategoryNotFoundException;
 import com.pfeffer.anotaaicatalog.core.mapper.CategoryMapper;
 import com.pfeffer.anotaaicatalog.core.usecase.category.CreateCategory;
+import com.pfeffer.anotaaicatalog.core.usecase.category.DeleteCategory;
 import com.pfeffer.anotaaicatalog.core.usecase.category.FindCategory;
+import com.pfeffer.anotaaicatalog.core.usecase.category.UpdateCategory;
 import com.pfeffer.anotaaicatalog.infra.mongo.mapper.MongoCategoryMapper;
 import com.pfeffer.anotaaicatalog.infra.mongo.model.Category;
 import com.pfeffer.anotaaicatalog.infra.mongo.repository.CategoryRepository;
@@ -12,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CategoryService implements CreateCategory, FindCategory {
+public class CategoryService implements CreateCategory, FindCategory, UpdateCategory, DeleteCategory {
 
     private final CategoryRepository repository;
 
@@ -42,7 +45,7 @@ public class CategoryService implements CreateCategory, FindCategory {
     }
 
     @Override
-    public CategoryDTO findCategory(String id) {
+    public CategoryDTO find(String id) {
         Category category = this.repository.findById(id).orElse(null);
 
         if (category == null) {
@@ -52,4 +55,29 @@ public class CategoryService implements CreateCategory, FindCategory {
         return CategoryMapper.toDTO(MongoCategoryMapper.toDomain(category));
     }
 
+    @Override
+    public CategoryDTO update(String id, CategoryDTO dto) {
+        Category category = this.repository.findById(id)
+                .orElseThrow(CategoryNotFoundException::new);
+
+        if (!dto.getTitle().isEmpty()) {
+            category.setTitle(dto.getTitle());
+        }
+
+        if (!dto.getDescription().isEmpty()) {
+            category.setDescription(dto.getDescription());
+        }
+
+        this.repository.save(category);
+
+        return CategoryMapper.toDTO(MongoCategoryMapper.toDomain(category));
+    }
+
+    @Override
+    public void delete(String id) {
+        Category category = this.repository.findById(id)
+                .orElseThrow(CategoryNotFoundException::new);
+
+        this.repository.delete(category);
+    }
 }
