@@ -9,6 +9,7 @@ public class ProductMapper {
         ProductDTO dto = new ProductDTO();
 
         dto.setId(bo.getId());
+        dto.setTitle(bo.getTitle());
         dto.setDescription(bo.getDescription());
         dto.setPrice(bo.getPrice());
         dto.setCategoryId(bo.getCategoryId());
@@ -21,6 +22,7 @@ public class ProductMapper {
         ProductBO bo = new ProductBO();
 
         bo.setId(dto.getId());
+        bo.setTitle(dto.getTitle());
         bo.setDescription(dto.getDescription());
         bo.setPrice(dto.getPrice());
         bo.setCategoryId(dto.getCategoryId());
