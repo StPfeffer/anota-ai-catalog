@@ -1,5 +1,6 @@
 package com.pfeffer.anotaaicatalog.infra.mongo.model;
 
+import com.pfeffer.anotaaicatalog.core.dto.ProductDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,5 +27,12 @@ public class Product {
     private Category category;
 
     private String ownerId;
+
+    public Product(ProductDTO dto) {
+        this.title = dto.getTitle();
+        this.description = dto.getDescription();
+        this.price = dto.getPrice();
+        this.ownerId = dto.getOwnerId();
+    }
 
 }
