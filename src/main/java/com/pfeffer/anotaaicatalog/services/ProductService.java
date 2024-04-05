@@ -39,9 +39,9 @@ public class ProductService implements CreateProduct, FindProduct, UpdateProduct
 
     @Override
     public List<ProductDTO> getAll() {
-        List<Product> categories = this.repository.findAll();
+        List<Product> products = this.repository.findAll();
 
-        return categories.stream()
+        return products.stream()
                 .map(MongoProductMapper::toDomain)
                 .toList()
                 .stream()
@@ -51,39 +51,39 @@ public class ProductService implements CreateProduct, FindProduct, UpdateProduct
 
     @Override
     public ProductDTO find(String id) {
-        Product category = this.repository.findById(id).orElse(null);
+        Product product = this.repository.findById(id).orElse(null);
 
-        if (category == null) {
+        if (product == null) {
             return null;
         }
 
-        return ProductMapper.toDTO(MongoProductMapper.toDomain(category));
+        return ProductMapper.toDTO(MongoProductMapper.toDomain(product));
     }
 
     @Override
     public ProductDTO update(String id, ProductDTO dto) {
-        Product category = this.repository.findById(id)
+        Product product = this.repository.findById(id)
                 .orElseThrow(ProductNotFoundException::new);
 
         if (!dto.getTitle().isEmpty()) {
-            category.setTitle(dto.getTitle());
+            product.setTitle(dto.getTitle());
         }
 
         if (!dto.getDescription().isEmpty()) {
-            category.setDescription(dto.getDescription());
+            product.setDescription(dto.getDescription());
         }
 
-        this.repository.save(category);
+        this.repository.save(product);
 
-        return ProductMapper.toDTO(MongoProductMapper.toDomain(category));
+        return ProductMapper.toDTO(MongoProductMapper.toDomain(product));
     }
 
     @Override
     public void delete(String id) {
-        Product category = this.repository.findById(id)
+        Product product = this.repository.findById(id)
                 .orElseThrow(ProductNotFoundException::new);
 
-        this.repository.delete(category);
+        this.repository.delete(product);
     }
 
 }
