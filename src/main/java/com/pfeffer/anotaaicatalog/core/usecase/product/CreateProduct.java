@@ -1,4 +1,4 @@
-package com.pfeffer.anotaaicatalog.core.usecase;
+package com.pfeffer.anotaaicatalog.core.usecase.product;
 
 import com.pfeffer.anotaaicatalog.core.dto.ProductDTO;
 
