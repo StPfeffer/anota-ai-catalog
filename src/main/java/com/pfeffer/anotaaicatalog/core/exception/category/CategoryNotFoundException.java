@@ -1,4 +1,4 @@
-package com.pfeffer.anotaaicatalog.core.exceptions.category;
+package com.pfeffer.anotaaicatalog.core.exception.category;
 
 public class CategoryNotFoundException extends CategoryException {
 }

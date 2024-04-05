@@ -1,7 +1,7 @@
 package com.pfeffer.anotaaicatalog.services;
 
 import com.pfeffer.anotaaicatalog.core.dto.CategoryDTO;
-import com.pfeffer.anotaaicatalog.core.exceptions.category.CategoryNotFoundException;
+import com.pfeffer.anotaaicatalog.core.exception.category.CategoryNotFoundException;
 import com.pfeffer.anotaaicatalog.core.mapper.CategoryMapper;
 import com.pfeffer.anotaaicatalog.core.usecase.category.CreateCategory;
 import com.pfeffer.anotaaicatalog.core.usecase.category.DeleteCategory;

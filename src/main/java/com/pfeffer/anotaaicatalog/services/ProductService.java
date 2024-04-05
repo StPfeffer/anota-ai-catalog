@@ -1,7 +1,7 @@
 package com.pfeffer.anotaaicatalog.services;
 
 import com.pfeffer.anotaaicatalog.core.dto.ProductDTO;
-import com.pfeffer.anotaaicatalog.core.exceptions.product.ProductNotFoundException;
+import com.pfeffer.anotaaicatalog.core.exception.product.ProductNotFoundException;
 import com.pfeffer.anotaaicatalog.core.mapper.ProductMapper;
 import com.pfeffer.anotaaicatalog.core.usecase.product.CreateProduct;
 import com.pfeffer.anotaaicatalog.core.usecase.product.DeleteProduct;
