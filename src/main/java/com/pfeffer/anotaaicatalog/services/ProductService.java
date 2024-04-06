@@ -1,5 +1,6 @@
 package com.pfeffer.anotaaicatalog.services;
 
+import com.pfeffer.anotaaicatalog.core.MessageDTO;
 import com.pfeffer.anotaaicatalog.core.category.exception.CategoryNotFoundException;
 import com.pfeffer.anotaaicatalog.core.product.ProductDTO;
 import com.pfeffer.anotaaicatalog.core.product.exception.ProductNotFoundException;
@@ -18,9 +19,12 @@ public class ProductService {
 
     private final CategoryService categoryService;
 
-    public ProductService(ProductRepository repository, CategoryService categoryService) {
+    private final AwsSnsService snsService;
+
+    public ProductService(ProductRepository repository, CategoryService categoryService, AwsSnsService snsService) {
         this.repository = repository;
         this.categoryService = categoryService;
+        this.snsService = snsService;
     }
 
     public Product create(ProductDTO dto) {
@@ -34,7 +38,10 @@ public class ProductService {
         Product newProduct = new Product(dto);
         newProduct.setCategory(category);
 
-        return this.repository.save(newProduct);
+        this.repository.save(newProduct);
+        this.snsService.publish(new MessageDTO(newProduct.getOwnerId()));
+
+        return newProduct;
     }
 
     public List<Product> getAll() {
@@ -66,7 +73,10 @@ public class ProductService {
             product.setPrice(dto.price());
         }
 
-        return this.repository.save(product);
+        this.repository.save(product);
+        this.snsService.publish(new MessageDTO(product.getOwnerId()));
+
+        return product;
     }
 
     public void delete(String id) {
