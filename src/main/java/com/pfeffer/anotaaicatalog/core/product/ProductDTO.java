@@ -1,4 +1,4 @@
-package com.pfeffer.anotaaicatalog.core.dto;
+package com.pfeffer.anotaaicatalog.core.product;
 
 import java.math.BigDecimal;
 

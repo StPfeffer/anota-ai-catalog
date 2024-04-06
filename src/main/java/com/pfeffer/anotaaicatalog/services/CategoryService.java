@@ -1,21 +1,16 @@
 package com.pfeffer.anotaaicatalog.services;
 
-import com.pfeffer.anotaaicatalog.core.dto.CategoryDTO;
-import com.pfeffer.anotaaicatalog.core.exception.category.CategoryNotFoundException;
-import com.pfeffer.anotaaicatalog.core.mapper.CategoryMapper;
-import com.pfeffer.anotaaicatalog.core.usecase.category.CreateCategory;
-import com.pfeffer.anotaaicatalog.core.usecase.category.DeleteCategory;
-import com.pfeffer.anotaaicatalog.core.usecase.category.FindCategory;
-import com.pfeffer.anotaaicatalog.core.usecase.category.UpdateCategory;
-import com.pfeffer.anotaaicatalog.infra.mongo.mapper.MongoCategoryMapper;
+import com.pfeffer.anotaaicatalog.core.category.CategoryDTO;
+import com.pfeffer.anotaaicatalog.core.category.exception.CategoryNotFoundException;
 import com.pfeffer.anotaaicatalog.infra.mongo.model.Category;
 import com.pfeffer.anotaaicatalog.infra.mongo.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class CategoryService implements CreateCategory, FindCategory, UpdateCategory, DeleteCategory {
+public class CategoryService {
 
     private final CategoryRepository repository;
 
@@ -23,40 +18,21 @@ public class CategoryService implements CreateCategory, FindCategory, UpdateCate
         this.repository = repository;
     }
 
-    @Override
-    public CategoryDTO create(CategoryDTO dto) {
+    public Category create(CategoryDTO dto) {
         Category newCategory = new Category(dto);
 
-        this.repository.save(newCategory);
-
-        return CategoryMapper.toDTO(MongoCategoryMapper.toDomain(newCategory));
+        return this.repository.save(newCategory);
     }
 
-    @Override
-    public List<CategoryDTO> getAll() {
-        List<Category> categories = this.repository.findAll();
-
-        return categories.stream()
-                .map(MongoCategoryMapper::toDomain)
-                .toList()
-                .stream()
-                .map(CategoryMapper::toDTO)
-                .toList();
+    public List<Category> getAll() {
+        return this.repository.findAll();
     }
 
-    @Override
-    public CategoryDTO find(String id) {
-        Category category = this.repository.findById(id).orElse(null);
-
-        if (category == null) {
-            return null;
-        }
-
-        return CategoryMapper.toDTO(MongoCategoryMapper.toDomain(category));
+    public Optional<Category> findById(String id) {
+        return this.repository.findById(id);
     }
 
-    @Override
-    public CategoryDTO update(String id, CategoryDTO dto) {
+    public Category update(String id, CategoryDTO dto) {
         Category category = this.repository.findById(id)
                 .orElseThrow(CategoryNotFoundException::new);
 
@@ -68,12 +44,9 @@ public class CategoryService implements CreateCategory, FindCategory, UpdateCate
             category.setDescription(dto.description());
         }
 
-        this.repository.save(category);
-
-        return CategoryMapper.toDTO(MongoCategoryMapper.toDomain(category));
+        return this.repository.save(category);
     }
 
-    @Override
     public void delete(String id) {
         Category category = this.repository.findById(id)
                 .orElseThrow(CategoryNotFoundException::new);

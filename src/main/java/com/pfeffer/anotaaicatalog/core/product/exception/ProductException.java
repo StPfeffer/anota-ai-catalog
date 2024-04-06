@@ -1,4 +1,4 @@
-package com.pfeffer.anotaaicatalog.core.exception.product;
+package com.pfeffer.anotaaicatalog.core.product.exception;
 
 public class ProductException extends RuntimeException {
 }

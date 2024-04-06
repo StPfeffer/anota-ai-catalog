@@ -1,21 +1,18 @@
 package com.pfeffer.anotaaicatalog.services;
 
-import com.pfeffer.anotaaicatalog.core.dto.ProductDTO;
-import com.pfeffer.anotaaicatalog.core.exception.product.ProductNotFoundException;
-import com.pfeffer.anotaaicatalog.core.mapper.ProductMapper;
-import com.pfeffer.anotaaicatalog.core.usecase.product.CreateProduct;
-import com.pfeffer.anotaaicatalog.core.usecase.product.DeleteProduct;
-import com.pfeffer.anotaaicatalog.core.usecase.product.FindProduct;
-import com.pfeffer.anotaaicatalog.core.usecase.product.UpdateProduct;
-import com.pfeffer.anotaaicatalog.infra.mongo.mapper.MongoProductMapper;
+import com.pfeffer.anotaaicatalog.core.category.exception.CategoryNotFoundException;
+import com.pfeffer.anotaaicatalog.core.product.ProductDTO;
+import com.pfeffer.anotaaicatalog.core.product.exception.ProductNotFoundException;
+import com.pfeffer.anotaaicatalog.infra.mongo.model.Category;
 import com.pfeffer.anotaaicatalog.infra.mongo.model.Product;
 import com.pfeffer.anotaaicatalog.infra.mongo.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class ProductService implements CreateProduct, FindProduct, UpdateProduct, DeleteProduct {
+public class ProductService {
 
     private final ProductRepository repository;
 
@@ -26,43 +23,34 @@ public class ProductService implements CreateProduct, FindProduct, UpdateProduct
         this.categoryService = categoryService;
     }
 
-    @Override
-    public ProductDTO create(ProductDTO dto) {
-        Product newProduct = new Product(dto);
-        newProduct.setCategory(categoryService.findById(dto.categoryId()));
+    public Product create(ProductDTO dto) {
+        Category category = this.categoryService.findById(dto.categoryId())
+                .orElseThrow(CategoryNotFoundException::new);
 
-        this.repository.save(newProduct);
-
-        return ProductMapper.toDTO(MongoProductMapper.toDomain(newProduct));
-    }
-
-    @Override
-    public List<ProductDTO> getAll() {
-        List<Product> products = this.repository.findAll();
-
-        return products.stream()
-                .map(MongoProductMapper::toDomain)
-                .toList()
-                .stream()
-                .map(ProductMapper::toDTO)
-                .toList();
-    }
-
-    @Override
-    public ProductDTO find(String id) {
-        Product product = this.repository.findById(id).orElse(null);
-
-        if (product == null) {
-            return null;
+        if (category == null) {
+            throw new CategoryNotFoundException();
         }
 
-        return ProductMapper.toDTO(MongoProductMapper.toDomain(product));
+        Product newProduct = new Product(dto);
+        newProduct.setCategory(category);
+
+        return this.repository.save(newProduct);
     }
 
-    @Override
-    public ProductDTO update(String id, ProductDTO dto) {
+    public List<Product> getAll() {
+        return this.repository.findAll();
+    }
+
+    public Optional<Product> findById(String id) {
+        return this.repository.findById(id);
+    }
+
+    public Product update(String id, ProductDTO dto) {
         Product product = this.repository.findById(id)
                 .orElseThrow(ProductNotFoundException::new);
+
+        this.categoryService.findById(dto.categoryId())
+                .ifPresent(product::setCategory);
 
         if (!dto.title().isEmpty()) {
             product.setTitle(dto.title());
@@ -72,12 +60,13 @@ public class ProductService implements CreateProduct, FindProduct, UpdateProduct
             product.setDescription(dto.description());
         }
 
-        this.repository.save(product);
+        if (!(dto.price() == null)) {
+            product.setPrice(dto.price());
+        }
 
-        return ProductMapper.toDTO(MongoProductMapper.toDomain(product));
+        return this.repository.save(product);
     }
 
-    @Override
     public void delete(String id) {
         Product product = this.repository.findById(id)
                 .orElseThrow(ProductNotFoundException::new);

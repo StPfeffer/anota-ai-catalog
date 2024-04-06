@@ -1,6 +1,6 @@
 package com.pfeffer.anotaaicatalog.infra.mongo.model;
 
-import com.pfeffer.anotaaicatalog.core.dto.ProductDTO;
+import com.pfeffer.anotaaicatalog.core.product.ProductDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,10 +9,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 
-@Document(collection = "products")
 @Getter
 @Setter
 @NoArgsConstructor
+@Document(collection = "products")
 public class Product {
 
     @Id

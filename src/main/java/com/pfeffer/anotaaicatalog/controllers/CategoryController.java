@@ -1,6 +1,7 @@
 package com.pfeffer.anotaaicatalog.controllers;
 
-import com.pfeffer.anotaaicatalog.core.dto.CategoryDTO;
+import com.pfeffer.anotaaicatalog.core.category.CategoryDTO;
+import com.pfeffer.anotaaicatalog.infra.mongo.model.Category;
 import com.pfeffer.anotaaicatalog.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,35 +22,35 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDTO> create(@RequestBody CategoryDTO dto) {
-        CategoryDTO category = this.service.create(dto);
+    public ResponseEntity<Category> create(@RequestBody CategoryDTO dto) {
+        Category category = this.service.create(dto);
 
         return new ResponseEntity<>(category, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoryDTO>> listAll() {
-        List<CategoryDTO> categories = this.service.getAll();
+    public ResponseEntity<List<Category>> listAll() {
+        List<Category> categories = this.service.getAll();
 
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<CategoryDTO> get(@PathVariable String id) {
-        CategoryDTO category = this.service.find(id);
+    public ResponseEntity<Category> get(@PathVariable String id) {
+        Category category = this.service.findById(id).orElse(null);
 
         return new ResponseEntity<>(category, HttpStatus.OK);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<CategoryDTO> update(@PathVariable String id, @RequestBody CategoryDTO dto) {
-        CategoryDTO category = this.service.update(id, dto);
+    public ResponseEntity<Category> update(@PathVariable String id, @RequestBody CategoryDTO dto) {
+        Category category = this.service.update(id, dto);
 
         return new ResponseEntity<>(category, HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<CategoryDTO> delete(@PathVariable String id) {
+    public ResponseEntity<Category> delete(@PathVariable String id) {
         this.service.delete(id);
 
         return ResponseEntity.noContent().build();
