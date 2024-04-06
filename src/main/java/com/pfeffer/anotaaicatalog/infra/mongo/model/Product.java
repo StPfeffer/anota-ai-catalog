@@ -24,9 +24,9 @@ public class Product {
 
     private BigDecimal price;
 
-    private Category category;
-
     private String ownerId;
+
+    private Category category;
 
     public Product(ProductDTO dto) {
         this.title = dto.title();
