@@ -6,27 +6,25 @@ import com.pfeffer.anotaaicatalog.core.entity.ProductBO;
 public class ProductMapper {
 
     public static ProductDTO toDTO(ProductBO bo) {
-        ProductDTO dto = new ProductDTO();
-
-        dto.setId(bo.getId());
-        dto.setTitle(bo.getTitle());
-        dto.setDescription(bo.getDescription());
-        dto.setPrice(bo.getPrice());
-        dto.setCategoryId(bo.getCategoryId());
-        dto.setOwnerId(bo.getOwnerId());
-
-        return dto;
+        return new ProductDTO(
+                bo.getId(),
+                bo.getTitle(),
+                bo.getDescription(),
+                bo.getPrice(),
+                bo.getCategoryId(),
+                bo.getOwnerId()
+        );
     }
 
     public static ProductBO toBO(ProductDTO dto) {
         ProductBO bo = new ProductBO();
 
-        bo.setId(dto.getId());
-        bo.setTitle(dto.getTitle());
-        bo.setDescription(dto.getDescription());
-        bo.setPrice(dto.getPrice());
-        bo.setCategoryId(dto.getCategoryId());
-        bo.setOwnerId(dto.getOwnerId());
+        bo.setId(dto.id());
+        bo.setTitle(dto.title());
+        bo.setDescription(dto.description());
+        bo.setPrice(dto.price());
+        bo.setCategoryId(dto.categoryId());
+        bo.setOwnerId(dto.ownerId());
 
         return bo;
     }

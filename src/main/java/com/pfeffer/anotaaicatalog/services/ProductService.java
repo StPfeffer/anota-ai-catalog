@@ -9,7 +9,6 @@ import com.pfeffer.anotaaicatalog.core.usecase.product.FindProduct;
 import com.pfeffer.anotaaicatalog.core.usecase.product.UpdateProduct;
 import com.pfeffer.anotaaicatalog.infra.mongo.mapper.MongoProductMapper;
 import com.pfeffer.anotaaicatalog.infra.mongo.model.Product;
-import com.pfeffer.anotaaicatalog.infra.mongo.repository.CategoryRepository;
 import com.pfeffer.anotaaicatalog.infra.mongo.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,17 +19,17 @@ public class ProductService implements CreateProduct, FindProduct, UpdateProduct
 
     private final ProductRepository repository;
 
-    private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
 
-    public ProductService(ProductRepository repository, CategoryRepository categoryRepository) {
+    public ProductService(ProductRepository repository, CategoryService categoryService) {
         this.repository = repository;
-        this.categoryRepository = categoryRepository;
+        this.categoryService = categoryService;
     }
 
     @Override
     public ProductDTO create(ProductDTO dto) {
         Product newProduct = new Product(dto);
-        newProduct.setCategory(categoryRepository.findById(dto.getCategoryId()).orElse(null));
+        newProduct.setCategory(categoryService.findById(dto.categoryId()));
 
         this.repository.save(newProduct);
 
@@ -65,12 +64,12 @@ public class ProductService implements CreateProduct, FindProduct, UpdateProduct
         Product product = this.repository.findById(id)
                 .orElseThrow(ProductNotFoundException::new);
 
-        if (!dto.getTitle().isEmpty()) {
-            product.setTitle(dto.getTitle());
+        if (!dto.title().isEmpty()) {
+            product.setTitle(dto.title());
         }
 
-        if (!dto.getDescription().isEmpty()) {
-            product.setDescription(dto.getDescription());
+        if (!dto.description().isEmpty()) {
+            product.setDescription(dto.description());
         }
 
         this.repository.save(product);

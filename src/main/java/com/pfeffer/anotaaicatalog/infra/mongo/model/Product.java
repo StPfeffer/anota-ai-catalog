@@ -29,10 +29,10 @@ public class Product {
     private String ownerId;
 
     public Product(ProductDTO dto) {
-        this.title = dto.getTitle();
-        this.description = dto.getDescription();
-        this.price = dto.getPrice();
-        this.ownerId = dto.getOwnerId();
+        this.title = dto.title();
+        this.description = dto.description();
+        this.price = dto.price();
+        this.ownerId = dto.ownerId();
     }
 
 }
