@@ -23,9 +23,9 @@ public class Category {
     private String ownerId;
 
     public Category(CategoryDTO dto) {
-        this.title = dto.getTitle();
-        this.description = dto.getDescription();
-        this.ownerId = dto.getOwnerId();
+        this.title = dto.title();
+        this.description = dto.description();
+        this.ownerId = dto.ownerId();
     }
 
 }

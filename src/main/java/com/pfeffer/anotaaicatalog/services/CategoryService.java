@@ -60,12 +60,12 @@ public class CategoryService implements CreateCategory, FindCategory, UpdateCate
         Category category = this.repository.findById(id)
                 .orElseThrow(CategoryNotFoundException::new);
 
-        if (!dto.getTitle().isEmpty()) {
-            category.setTitle(dto.getTitle());
+        if (!dto.title().isEmpty()) {
+            category.setTitle(dto.title());
         }
 
-        if (!dto.getDescription().isEmpty()) {
-            category.setDescription(dto.getDescription());
+        if (!dto.description().isEmpty()) {
+            category.setDescription(dto.description());
         }
 
         this.repository.save(category);
