@@ -23,30 +23,30 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Product> create(@RequestBody ProductDTO dto) {
-        Product category = this.service.create(dto);
+        Product product = this.service.create(dto);
 
-        return new ResponseEntity<>(category, HttpStatus.CREATED);
+        return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<Product>> listAll() {
-        List<Product> categories = this.service.getAll();
+        List<Product> products = this.service.getAll();
 
-        return new ResponseEntity<>(categories, HttpStatus.OK);
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<Product> get(@PathVariable String id) {
-        Product category = this.service.findById(id).orElse(null);
+        Product product = this.service.findById(id).orElse(null);
 
-        return new ResponseEntity<>(category, HttpStatus.OK);
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     @PutMapping("{id}")
     public ResponseEntity<Product> update(@PathVariable String id, @RequestBody ProductDTO dto) {
-        Product category = this.service.update(id, dto);
+        Product product = this.service.update(id, dto);
 
-        return new ResponseEntity<>(category, HttpStatus.OK);
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
