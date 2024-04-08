@@ -26,13 +26,14 @@ public class Product {
 
     private String ownerId;
 
-    private Category category;
+    private String categoryId;
 
     public Product(ProductDTO dto) {
         this.title = dto.title();
         this.description = dto.description();
         this.price = dto.price();
         this.ownerId = dto.ownerId();
+        this.categoryId = dto.categoryId();
     }
 
 }
