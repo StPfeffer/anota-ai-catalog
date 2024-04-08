@@ -4,7 +4,6 @@ import com.pfeffer.anotaaicatalog.core.MessageDTO;
 import com.pfeffer.anotaaicatalog.core.category.exception.CategoryNotFoundException;
 import com.pfeffer.anotaaicatalog.core.product.ProductDTO;
 import com.pfeffer.anotaaicatalog.core.product.exception.ProductNotFoundException;
-import com.pfeffer.anotaaicatalog.infra.mongo.model.Category;
 import com.pfeffer.anotaaicatalog.infra.mongo.model.Product;
 import com.pfeffer.anotaaicatalog.infra.mongo.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -34,7 +33,7 @@ public class ProductService {
         Product newProduct = new Product(dto);
 
         this.repository.save(newProduct);
-        this.snsService.publish(new MessageDTO(newProduct.getOwnerId()));
+        this.snsService.publish(new MessageDTO(newProduct.toString()));
 
         return newProduct;
     }
@@ -71,7 +70,7 @@ public class ProductService {
         }
 
         this.repository.save(product);
-        this.snsService.publish(new MessageDTO(product.getOwnerId()));
+        this.snsService.publish(new MessageDTO(product.toString()));
 
         return product;
     }
