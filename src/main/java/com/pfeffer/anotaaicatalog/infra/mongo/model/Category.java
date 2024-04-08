@@ -4,6 +4,7 @@ import com.pfeffer.anotaaicatalog.core.category.CategoryDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -26,6 +27,19 @@ public class Category {
         this.title = dto.title();
         this.description = dto.description();
         this.ownerId = dto.ownerId();
+    }
+
+    @Override
+    public String toString() {
+        JSONObject json = new JSONObject();
+
+        json.put("id", this.id);
+        json.put("title", this.title);
+        json.put("description", this.description);
+        json.put("ownerId", this.ownerId);
+        json.put("type", "category");
+
+        return json.toString();
     }
 
 }
