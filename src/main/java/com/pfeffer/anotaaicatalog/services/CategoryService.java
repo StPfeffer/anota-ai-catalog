@@ -1,5 +1,6 @@
 package com.pfeffer.anotaaicatalog.services;
 
+import com.pfeffer.anotaaicatalog.core.MessageDTO;
 import com.pfeffer.anotaaicatalog.core.category.CategoryDTO;
 import com.pfeffer.anotaaicatalog.core.category.exception.CategoryNotFoundException;
 import com.pfeffer.anotaaicatalog.infra.mongo.model.Category;
@@ -14,14 +15,20 @@ public class CategoryService {
 
     private final CategoryRepository repository;
 
-    public CategoryService(CategoryRepository repository) {
+    private final AwsSnsService snsService;
+
+    public CategoryService(CategoryRepository repository, AwsSnsService snsService) {
         this.repository = repository;
+        this.snsService = snsService;
     }
 
     public Category create(CategoryDTO dto) {
-        Category newCategory = new Category(dto);
+        Category category = new Category(dto);
 
-        return this.repository.save(newCategory);
+        this.repository.save(category);
+        this.snsService.publish(new MessageDTO(category.toString()));
+
+        return category;
     }
 
     public List<Category> getAll() {
@@ -44,7 +51,10 @@ public class CategoryService {
             category.setDescription(dto.description());
         }
 
-        return this.repository.save(category);
+        this.repository.save(category);
+        this.snsService.publish(new MessageDTO(category.toString()));
+
+        return category;
     }
 
     public void delete(String id) {
